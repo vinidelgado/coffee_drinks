@@ -8,9 +8,11 @@ class CoffeeDrinkRepositoryImpl: CoffeeDrinkRepository {
         return flowOf(FakeCoffeeDrinkDataSource().getCoffeeDrinks() as MutableList<CoffeeDrink>)
     }
 
-    override fun getCoffeeDrink(id: Long): Flow<CoffeeDrink> {
+    override fun getCoffeeDrink(id: Long): Flow<CoffeeDrink?> {
         return flowOf(
-            FakeCoffeeDrinkDataSource().getCoffeeDrinks().first { it.id == id }
+            FakeCoffeeDrinkDataSource().getCoffeeDrinks().firstOrNull {
+                it.id == id
+            }
         )
     }
 

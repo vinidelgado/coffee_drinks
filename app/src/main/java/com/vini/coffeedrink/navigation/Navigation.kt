@@ -65,11 +65,11 @@ fun MainNavGraph(navController: NavHostController) {
                     )
                 ) + fadeOut(animationSpec = tween(300))
             },
-            arguments = listOf(navArgument("id") { type = NavType.IntType })
+            arguments = listOf(navArgument("id") { type = NavType.LongType })
         ) {
             CoffeeDrinkDetailScreen(
                 navController = navController,
-                id = it.arguments?.getLong("id") ?: 0
+                id = it.arguments?.getLong("id") ?: -1
             )
         }
 

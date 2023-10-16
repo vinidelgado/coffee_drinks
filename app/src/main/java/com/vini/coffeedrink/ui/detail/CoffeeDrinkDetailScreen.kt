@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -41,7 +42,12 @@ import com.vini.barista.R
 import com.vini.coffeedrink.data.CoffeeDrinkItem
 import com.vini.coffeedrink.ui.annotation.UiModePreviews
 import com.vini.coffeedrink.ui.theme.AppTheme
+import com.vini.coffeedrink.ui.theme.primary_text_color_dark
+import com.vini.coffeedrink.ui.theme.primary_text_color_light
+import com.vini.coffeedrink.ui.theme.secondary_text_color
 import com.vini.coffeedrink.ui.theme.seed
+import com.vini.coffeedrink.ui.theme.tertiary_text_color_dark
+import com.vini.coffeedrink.ui.theme.tertiary_text_color_light
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,20 +55,18 @@ import com.vini.coffeedrink.ui.theme.seed
 internal fun CoffeeDrinkDetailScreen(
     navController: NavController,
     viewModel: CoffeeDrinkDetailViewModel = hiltViewModel(),
-    id:Long
+    id: Long
 ) {
-//    viewModel.setCoffeeDrinkId(id)
+    viewModel.setCoffeeDrinkId(id)
     val state by viewModel.state.collectAsStateWithLifecycle()
+    viewModel.getCoffeeDrinkDetail()
     Scaffold(
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = seed),
                 title = {
                     Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 10.dp, start = 15.dp),
-                        text = "American Coffee",
+                        text = "Drink Detail",
                         style = MaterialTheme.typography.titleLarge,
                         color = Color.White,
                         textAlign = TextAlign.Start
@@ -75,7 +79,7 @@ internal fun CoffeeDrinkDetailScreen(
                         modifier = Modifier
                             .size(24.dp, 24.dp)
                             .clickable {
-                                navController.navigateUp()
+                                navController.popBackStack()
                             },
                         tint = Color.White
                     )
@@ -125,32 +129,81 @@ private fun CoffeeDrinkDetailContentSuccess(data: CoffeeDrinkItem) {
     ) {
         item {
             data.apply {
-
-                val dogImage: Painter = painterResource(id = R.drawable.blue_dog)
+                val coffeeImage: Painter = painterResource(id = R.drawable.blue_dog)
                 Image(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(346.dp),
-                    painter = dogImage,
+                    painter = coffeeImage,
                     alignment = Alignment.CenterStart,
                     contentDescription = "",
                     contentScale = ContentScale.Crop
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
-                Column(verticalArrangement = Arrangement.Center) {
+                Column(
+                    modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Title(name)
+                    Spacer(modifier = Modifier.height(24.dp))
                     Text(
-                        text = name,
+                        text = "About",
                         modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp),
-                        color = MaterialTheme.colorScheme.surface,
-                        fontWeight = FontWeight.Bold,
-                        style = MaterialTheme.typography.headlineMedium
+                        color = secondary_text_color,
+                        style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
+                    val tertiaryTextColor = if (isSystemInDarkTheme()) {
+                        tertiary_text_color_dark
+                    } else {
+                        tertiary_text_color_light
+                    }
+                    Text(
+                        text = description,
+                        modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp),
+                        color = tertiaryTextColor,
+                        fontWeight = FontWeight.Normal,
+                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Normal)
+                    )
+                    Spacer(modifier = Modifier.height(24.dp))
+                    Text(
+                        text = "Ingredients",
+                        modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp),
+                        color = secondary_text_color,
+                        style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.Bold),
+                    )
+                    Spacer(modifier = Modifier.height(12.dp))
+                    Text(
+                        text = ingredients,
+                        modifier = Modifier.padding(0.dp, 0.dp, 12.dp, 0.dp),
+                        color = tertiaryTextColor,
+                        fontWeight = FontWeight.Normal,
+                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Normal)
+                    )
+
                 }
             }
         }
     }
+}
+
+@Composable
+fun Title(title: String) {
+    val primaryTextColor = if (isSystemInDarkTheme()) {
+        primary_text_color_dark
+    } else {
+        primary_text_color_light
+    }
+    Text(
+        text = title,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(0.dp, 0.dp, 12.dp, 0.dp),
+        color = primaryTextColor,
+        style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
+        textAlign = TextAlign.Start
+    )
 }
 
 @UiModePreviews

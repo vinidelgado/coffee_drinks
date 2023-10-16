@@ -6,33 +6,48 @@ import com.vini.coffeedrink.data.CoffeeDrinkItemMapper
 import com.vini.coffeedrink.data.CoffeeDrinkRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 internal class CoffeeDrinkDetailViewModel @Inject constructor(
-    repository: CoffeeDrinkRepository,
-    mapper: CoffeeDrinkItemMapper,
+    private val repository: CoffeeDrinkRepository,
+    private val mapper: CoffeeDrinkItemMapper,
 ) : ViewModel() {
 
-//    private val coffeeDrinkId = MutableStateFlow<Long>(-1)
-//    fun setCoffeeDrinkId(id: Long) {
-//        coffeeDrinkId.value = id
-//    }
+    private val _state = MutableStateFlow<CoffeeDrinkDetailState>(CoffeeDrinkDetailState.Loading)
+    val state = _state.asStateFlow()
 
-    val state = repository.getCoffeeDrink(id = 2)
-        .map { coffeeDrinks ->
-            CoffeeDrinkDetailState.Success(data = mapper.map(coffeeDrinks))
+    private val coffeeDrinkId = MutableStateFlow<Long>(-1)
+    fun setCoffeeDrinkId(id: Long) {
+        coffeeDrinkId.value = id
+    }
+
+    fun getCoffeeDrinkDetail() {
+        viewModelScope.launch {
+            repository.getCoffeeDrink(coffeeDrinkId.value)
+                .catch { exception ->
+                    _state.update {
+                        CoffeeDrinkDetailState.Error(exception.message ?: "Error")
+                    }
+                }.collect { coffeeDrinks ->
+                    if (coffeeDrinks != null) {
+                        _state.update {
+                            CoffeeDrinkDetailState.Success(
+                                data = mapper.map(
+                                    coffeeDrinks
+                                )
+                            )
+                        }
+                    } else {
+                        _state.update {
+                            CoffeeDrinkDetailState.Error("Coffee Detail not found")
+                        }
+                    }
+                }
         }
-        .catch {
-            CoffeeDrinkDetailState.Error(it.message ?: "Error")
-        }
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = CoffeeDrinkDetailState.Loading
-        )
+    }
 }

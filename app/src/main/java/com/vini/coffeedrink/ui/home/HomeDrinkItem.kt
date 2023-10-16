@@ -1,10 +1,12 @@
 package com.vini.coffeedrink.ui.home
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -20,17 +22,19 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.vini.barista.R
 import com.vini.coffeedrink.data.CoffeeDrinkItem
 import com.vini.coffeedrink.ui.annotation.UiModePreviews
 import com.vini.coffeedrink.ui.theme.AppTheme
+import com.vini.coffeedrink.ui.theme.primary_text_color_dark
+import com.vini.coffeedrink.ui.theme.primary_text_color_light
+import com.vini.coffeedrink.ui.theme.secondary_text_color
 
 @Composable
 fun HomeDrinkItem(data: CoffeeDrinkItem) {
-    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+    Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onBackground)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -47,19 +51,27 @@ fun HomeDrinkItem(data: CoffeeDrinkItem) {
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(16.dp))
+            val primaryTextColor = if (isSystemInDarkTheme()) {
+                primary_text_color_dark
+            } else {
+                primary_text_color_light
+            }
             Column {
                 Text(
                     text = data.name,
                     modifier = Modifier.padding(top = 8.dp, end = 8.dp),
                     style = MaterialTheme.typography.titleMedium,
+                    color = primaryTextColor,
                     maxLines = 1
                 )
+                Spacer(Modifier.height(8.dp))
                 Text(
                     text = data.ingredients,
-                    modifier = Modifier.padding(end = 8.dp),
+                    modifier = Modifier.padding(end = 4.dp),
+                    color = secondary_text_color,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Light),
+                    style = MaterialTheme.typography.labelSmall,
                 )
             }
         }

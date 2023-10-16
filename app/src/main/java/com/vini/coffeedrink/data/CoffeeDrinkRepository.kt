@@ -6,7 +6,7 @@ interface CoffeeDrinkRepository {
 
     fun getCoffeeDrinks(): Flow<List<CoffeeDrink>>
 
-    fun getCoffeeDrink(id: Long): Flow<CoffeeDrink>
+    fun getCoffeeDrink(id: Long): Flow<CoffeeDrink?>
 
     suspend fun updateFavouriteState(id: Long, newFavouriteState: Boolean): Flow<Boolean>
 }
