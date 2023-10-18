@@ -30,29 +30,32 @@ import com.vini.coffeedrink.ui.theme.AppTheme
 @Composable
 internal fun HomeScreen(navController: NavController, viewModel: HomeViewModel = hiltViewModel()) {
     val state by viewModel.state.collectAsStateWithLifecycle()
-    Surface(color = MaterialTheme.colorScheme.background) {
-        Column {
-            CoffeeDrinkShortAppBar()
-            HomeContent(state = state, onCoffeeDrinkClicked = {
-                navController.navigate("${ScreenRoutes.CoffeeDrinkDetailScreen.route}/${it.id}")
-            })
-        }
-    }
+    HomeContent(state = state, onCoffeeDrinkClicked = {
+        navController.navigate("${ScreenRoutes.CoffeeDrinkDetailScreen.route}/${it.id}")
+    })
 }
 
 @Composable
 internal fun HomeContent(state: HomeState, onCoffeeDrinkClicked: (CoffeeDrinkItem) -> Unit) {
-    when (state) {
-        is HomeState.Loading -> {
-            HomeContentLoading()
-        }
+    Surface(color = MaterialTheme.colorScheme.background) {
+        Column {
+            CoffeeDrinkShortAppBar()
+            when (state) {
+                is HomeState.Loading -> {
+                    HomeContentLoading()
+                }
 
-        is HomeState.Success -> {
-            HomeContentDrinkList(data = state.data, onCoffeeDrinkClicked = onCoffeeDrinkClicked)
-        }
+                is HomeState.Success -> {
+                    HomeContentDrinkList(
+                        data = state.data,
+                        onCoffeeDrinkClicked = onCoffeeDrinkClicked
+                    )
+                }
 
-        is HomeState.Error -> {
-            HomeContentError(state.data)
+                is HomeState.Error -> {
+                    HomeContentError(state.data)
+                }
+            }
         }
     }
 }
