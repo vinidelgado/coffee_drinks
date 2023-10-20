@@ -122,5 +122,4 @@ dependencies {
     testImplementation(platform(libs.androidx.compose.bom))
     testImplementation(libs.androidx.compose.ui.test.junit4)
     testImplementation(libs.junit)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
