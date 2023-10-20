@@ -60,11 +60,7 @@ android {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
     }
 
-    testOptions {
-        unitTests {
-            isIncludeAndroidResources = true
-        }
-    }
+    testOptions.unitTests.isIncludeAndroidResources = true
 
     packaging.resources {
         // Multiple dependency bring these files in. Exclude them to enable
