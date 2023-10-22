@@ -1,6 +1,7 @@
 package com.vini.coffeedrink.ui.home.components
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -30,8 +31,8 @@ class HomeScreenComposableTest {
     val composeTestRule = createAndroidComposeRule(MainActivity::class.java)
 
     @Test
-    fun screenTest() {
-        composeTestRule.setContent {
+    fun screenTest() {composeTestRule.activity.
+        setContent {
             AppTheme {
                 HomeContent(
                     HomeState.Success(

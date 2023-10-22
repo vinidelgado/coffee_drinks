@@ -1,6 +1,7 @@
 package com.vini.coffeedrink.ui.home.components
 
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -30,7 +31,7 @@ class HomeItemComposableTest {
 
     @Test
     fun testComponent() {
-        composeTestRule.setContent {
+        composeTestRule.activity.setContent {
             AppTheme {
                 HomeDrinkItem(
                     data = CoffeeDrinkItem(
