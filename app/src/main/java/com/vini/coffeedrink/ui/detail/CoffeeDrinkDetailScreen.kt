@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -24,6 +26,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -38,6 +41,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.vini.barista.R
 import com.vini.coffeedrink.data.CoffeeDrinkItem
@@ -156,15 +160,23 @@ fun ContainerImage(searchTerm: String) {
 
     val urlUnsplash =
         "https://source.unsplash.com/random/${screenWidth}×${screenHeight}/?${terms}"
-    AsyncImage(
+    SubcomposeAsyncImage(
         model = ImageRequest.Builder(LocalContext.current)
             .data(urlUnsplash)
             .crossfade(true)
             .build(),
+        loading = {
+            ContainerLoadingImage()
+        },
+        success = {
+            ContainerLoadingImage()
+        },
+        error = {
+            Text(text = "Erro ao carregar imagem")
+        },
         modifier = Modifier
             .fillMaxWidth()
             .height(346.dp),
-        placeholder = painterResource(R.drawable.blue_dog),
         contentDescription = stringResource(R.string.app_name),
         contentScale = ContentScale.Crop
     )
@@ -187,6 +199,17 @@ fun ContainerTitle(coffeeDrinkItem: CoffeeDrinkItem) {
         style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
         textAlign = TextAlign.Start
     )
+}
+
+@Composable
+fun ContainerLoadingImage() {
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+        )
+    }
 }
 
 @Composable

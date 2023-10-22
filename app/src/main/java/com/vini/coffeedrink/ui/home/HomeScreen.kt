@@ -80,7 +80,7 @@ fun HomeContentDrinkList(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .testTag("Driver Standings List"),
+                .testTag("Coffee Drink List"),
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp),
             state = lazyListState

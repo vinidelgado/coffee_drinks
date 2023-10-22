@@ -1,13 +1,10 @@
 package com.vini.coffeedrink.ui.home.components
 
 import androidx.activity.ComponentActivity
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onRoot
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.github.takahirom.roborazzi.DEFAULT_ROBORAZZI_OUTPUT_DIR_PATH
+import com.github.takahirom.roborazzi.ExperimentalRoborazziApi
 import com.github.takahirom.roborazzi.RobolectricDeviceQualifiers
 import com.github.takahirom.roborazzi.RoborazziOptions
 import com.github.takahirom.roborazzi.captureRoboImage
@@ -22,15 +19,14 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 
+@OptIn(ExperimentalRoborazziApi::class)
 @RunWith(AndroidJUnit4::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)
 @Config(sdk = [33], qualifiers = RobolectricDeviceQualifiers.Pixel5)
 class HomeItemComposableTest {
 
     @get:Rule
-    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
-
-    val directoryName = "MainActivityKtTest"
+    val composeTestRule = createAndroidComposeRule(MainActivity::class.java)
 
     @Test
     fun testComponent() {
@@ -52,7 +48,7 @@ class HomeItemComposableTest {
         val methodName = Thread.currentThread().stackTrace[1].methodName
         val className = Thread.currentThread().stackTrace[1].className
         composeTestRule.onRoot().captureRoboImage(
-            filePath = "src/test/screenshots/$directoryName/${className}_${methodName}.png",
+            filePath = "src/test/screenshots/$className/${className}_${methodName}.png",
             roborazziOptions = RoborazziOptions(
                 recordOptions =
                 RoborazziOptions.RecordOptions(resizeScale = 0.5)
