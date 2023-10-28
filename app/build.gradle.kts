@@ -24,6 +24,7 @@ android {
 
     buildTypes {
         getByName("debug") {
+            isTestCoverageEnabled = true
             signingConfig = signingConfigs.getByName("debug")
         }
 
