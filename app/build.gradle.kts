@@ -24,7 +24,8 @@ android {
 
     buildTypes {
         getByName("debug") {
-            isTestCoverageEnabled = true
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
             signingConfig = signingConfigs.getByName("debug")
         }
 
@@ -102,6 +103,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime)
 
     implementation(libs.coil.kt.compose)
+
     // Hilt - dependency injection
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.android)
