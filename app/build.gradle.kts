@@ -5,7 +5,11 @@ plugins {
     alias(libs.plugins.kapt)
     alias(libs.plugins.hilt)
     alias(libs.plugins.roborazzi.plugin)
+    id("jacoco")
+    id("jacoco-report-aggregation")
 }
+
+apply(from = "$rootDir/buildscripts/plugins/jacoco-report.gradle.kts")
 
 android {
     compileSdk = libs.versions.compileSdk.get().toInt()
@@ -103,6 +107,8 @@ dependencies {
     implementation(libs.androidx.navigation.runtime)
 
     implementation(libs.coil.kt.compose)
+
+    implementation(libs.jacoco)
 
     // Hilt - dependency injection
     implementation(libs.androidx.hilt.navigation.compose)
