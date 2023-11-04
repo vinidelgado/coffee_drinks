@@ -36,6 +36,7 @@ hilt = "2.46.1"
 hiltExt = "1.0.0"
 paparazzi = "1.3.1"
 roborazzi = "1.8.0-alpha-1"
+kover = "0.7.4"
 # @pin When updating to AGP 7.4.0-alpha10 and up we can update this https://developer.android.com/studio/write/java8-support#library-desugaring-versions
 jdkDesugar = "2.0.3"
 junit = "4.13.2"
@@ -154,3 +155,4 @@ secrets = { id = "com.google.android.libraries.mapsplatform.secrets-gradle-plugi
 version-catalog-update = { id = "nl.littlerobots.version-catalog-update", version.ref = "version-catalog-update" }
 paparazzi = { id = "app.cash.paparazzi", version.ref = "paparazzi" }
 roborazzi-plugin = { id = "io.github.takahirom.roborazzi", version.ref = "roborazzi" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }

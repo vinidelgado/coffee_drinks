@@ -1,3 +1,8 @@
+import org.apache.tools.ant.filters.EscapeUnicode
+import java.time.LocalDate
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application)
@@ -5,6 +10,7 @@ plugins {
     alias(libs.plugins.kapt)
     alias(libs.plugins.hilt)
     alias(libs.plugins.roborazzi.plugin)
+    alias(libs.plugins.kover)
 }
 
 android {
@@ -68,6 +74,14 @@ android {
         excludes += "/META-INF/AL2.0"
         excludes += "/META-INF/LGPL2.1"
     }
+
+    koverReport {
+        defaults {
+            xml { onCheck = true }
+            html { onCheck = true }
+        }
+    }
+
 }
 
 dependencies {
