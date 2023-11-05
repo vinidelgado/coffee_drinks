@@ -1,8 +1,3 @@
-import org.apache.tools.ant.filters.EscapeUnicode
-import java.time.LocalDate
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-
 @Suppress("DSL_SCOPE_VIOLATION")
 plugins {
     alias(libs.plugins.android.application)
