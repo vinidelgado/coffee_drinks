@@ -69,4 +69,12 @@ allprojects {
             licenseHeaderFile(rootProject.file("spotless/copyright.kt"), "(^(?![\\/ ]\\*).*$)")
         }
     }
+
+    apply(plugin = rootProject.libs.plugins.kover.get().pluginId).also {
+        kover {
+            disabledForProject = false
+            useKoverTool()
+        }
+        rootProject.dependencies.add("kover", project(path))
+    }
 }

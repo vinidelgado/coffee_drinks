@@ -43,6 +43,12 @@ android {
         }
     }
 
+    // Required for annotation processing plugins like Dagger
+    kapt {
+        generateStubs = true
+        correctErrorTypes = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -67,6 +73,22 @@ android {
     }
 
     testOptions.unitTests.isIncludeAndroidResources = true
+    testOptions {
+        unitTests.all {
+            kover {
+                excludeTests {
+                    tasks("testReleaseUnitTest")
+                }
+                koverReport {
+                    defaults {
+                        xml { onCheck = true }
+                        html { onCheck = true }
+                    }
+                }
+            }
+        }
+    }
+
 
     packaging.resources {
         // Multiple dependency bring these files in. Exclude them to enable
@@ -75,12 +97,25 @@ android {
         excludes += "/META-INF/LGPL2.1"
     }
 
-    koverReport {
-        defaults {
-            xml { onCheck = true }
-            html { onCheck = true }
-        }
-    }
+//    koverReport {
+//        filters {
+//            excludes {
+//                annotatedBy("androidx.compose.ui.tooling.preview.Preview")
+//                annotatedBy("androidx.compose.runtime.Composable")
+//            }
+//            includes {
+//                packages("com.vini.coffeedrink.*")
+//            }
+//        }
+//    }
+//
+//    kover {
+////        useKoverTool()
+//
+//        excludeTests {
+//            tasks("testReleaseUnitTest")
+//        }
+//    }
 
 }
 
